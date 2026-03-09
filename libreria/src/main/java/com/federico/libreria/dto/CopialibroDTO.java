@@ -1,9 +1,16 @@
 package com.federico.libreria.dto;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
+@NoArgsConstructor
+@AllArgsConstructor
+@Getter
+@Setter
 public class CopialibroDTO {
     private Long id;
 
@@ -22,63 +29,4 @@ public class CopialibroDTO {
     private String nomeLibro;
 
     private String nomeLibreria;
-
-    public CopialibroDTO() {}
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public Long getLibreriaId() {
-        return libreriaId;
-    }
-
-    public void setLibreriaId(Long libreriaId) {
-        this.libreriaId = libreriaId;
-    }
-
-    public Long getLibroId() {
-        return libroId;
-    }
-
-    public void setLibroId(Long libroId) {
-        this.libroId = libroId;
-    }
-
-    public String getRipiano() {
-        return ripiano;
-    }
-
-    public void setRipiano(String ripiano) {
-        this.ripiano = ripiano;
-    }
-
-    public String getNomeLibreria() {
-        return nomeLibreria;
-    }
-
-    public void setNomeLibreria(String nomeLibreria) {
-        this.nomeLibreria = nomeLibreria;
-    }
-
-    public String getScaffale() {
-        return scaffale;
-    }
-
-    public void setScaffale(String scaffale) {
-        this.scaffale = scaffale;
-    }
-
-    public String getNomeLibro() {
-        return nomeLibro;
-    }
-
-    public void setNomeLibro(String nomeLibro) {
-        this.nomeLibro = nomeLibro;
-    }
-
 }

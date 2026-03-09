@@ -1,7 +1,15 @@
 package com.federico.libreria.dto;
 
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
 import java.util.Date;
 
+@NoArgsConstructor
+@AllArgsConstructor
+@Getter @Setter
 public class PrestitoDTO {
     private Long id;
     private Long copialibroId;
@@ -10,62 +18,4 @@ public class PrestitoDTO {
     private String nomeUtente;
     private Date dataPrestito;
     private Date dataRestituzione;
-
-    public PrestitoDTO() {}
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public Long getCopialibroId() {
-        return copialibroId;
-    }
-
-    public void setCopialibroId(Long copialibroId) {
-        this.copialibroId = copialibroId;
-    }
-
-    public String getNomeLibro() {
-        return nomeLibro;
-    }
-
-    public void setNomeLibro(String nomeLibro) {
-        this.nomeLibro = nomeLibro;
-    }
-
-    public Long getUtenteId() {
-        return utenteId;
-    }
-
-    public void setUtenteId(Long utenteId) {
-        this.utenteId = utenteId;
-    }
-
-    public String getNomeUtente() {
-        return nomeUtente;
-    }
-
-    public void setNomeUtente(String nomeUtente) {
-        this.nomeUtente = nomeUtente;
-    }
-
-    public Date getDataPrestito() {
-        return dataPrestito;
-    }
-
-    public void setDataPrestito(Date dataPrestito) {
-        this.dataPrestito = dataPrestito;
-    }
-
-    public Date getDataRestituzione() {
-        return dataRestituzione;
-    }
-
-    public void setDataRestituzione(Date dataRestituzione) {
-        this.dataRestituzione = dataRestituzione;
-    }
 }

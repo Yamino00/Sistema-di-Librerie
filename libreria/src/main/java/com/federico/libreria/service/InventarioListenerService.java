@@ -3,7 +3,6 @@ package com.federico.libreria.service;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.dataformat.xml.XmlMapper;
 import com.federico.libreria.dto.CopialibroDTO;
-import jakarta.validation.Validator;
 import com.federico.libreria.entity.Copialibro;
 import com.federico.libreria.entity.Libreria;
 import com.federico.libreria.entity.Libro;
@@ -11,6 +10,7 @@ import com.federico.libreria.repository.CopialibroRepository;
 import com.federico.libreria.repository.LibreriaRepository;
 import com.federico.libreria.repository.LibroRepository;
 import jakarta.validation.ConstraintViolation;
+import jakarta.validation.Validator;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -88,6 +88,7 @@ public class InventarioListenerService {
             System.err.println("Errore durante l'elaborazione del messaggio: " + e.getMessage());
         }
     }
+
     // Questo metodo si occupa di salvare la nuova copia nel database, dopo aver verificato che il libro e la libreria esistano
     private void salvaNuovaCopia(CopialibroDTO dto) {
         Libro libro = libroRepository.findById(dto.getLibroId())
@@ -106,4 +107,5 @@ public class InventarioListenerService {
 
         System.out.println("Nuova copia salvata nel db con ID: " + nuovaCopia.getId());
     }
+
 }

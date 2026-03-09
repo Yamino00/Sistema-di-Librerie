@@ -1,11 +1,15 @@
 package com.federico.libreria.entity;
 
 import jakarta.persistence.*;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.util.Date;
 
 @Entity
 @Table(name = "prestito")
+@Getter
+@Setter
 public class Prestito {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -24,46 +28,5 @@ public class Prestito {
 
     @Column(name = "data_restituzione")
     private Date dataRestituzione;
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public Copialibro getCopialibro() {
-        return copialibro;
-    }
-
-    public void setCopialibro(Copialibro copialibro) {
-        this.copialibro = copialibro;
-    }
-
-    public Utente getUtente() {
-        return utente;
-    }
-
-    public void setUtente(Utente utente) {
-        this.utente = utente;
-    }
-
-    public Date getDataPrestito() {
-        return dataPrestito;
-    }
-
-    public void setDataPrestito(Date dataPrestito) {
-        this.dataPrestito = dataPrestito;
-    }
-
-    public Date getDataRestituzione() {
-        return dataRestituzione;
-    }
-
-    public void setDataRestituzione(Date dataRestituzione) {
-        this.dataRestituzione = dataRestituzione;
-    }
-
 }
 
