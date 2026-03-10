@@ -1,0 +1,77 @@
+services:
+  # 1. Elasticsearch
+  elasticsearch:
+    image: docker.elastic.co/elasticsearch/elasticsearch:9.3.1
+    container_name: elasticsearch
+    environment:
+      - discovery.type=single-node
+      - xpack.security.enabled=false # Disabilita la sicurezza per facilitare lo sviluppo locale
+      - ES_JAVA_OPTS=-Xms1g -Xmx1g # Limita l'uso della RAM a 1GB
+    ports:
+      - "9200:9200"
+      - "9297:9300"
+    volumes:
+      - elastic_data:/usr/share/elasticsearch/data
+    networks:
+      - dev-network
+
+  # 2. Kibana
+  kibana:
+    image: docker.elastic.co/kibana/kibana:9.3.1
+    container_name: kibana
+    environment:
+      - ELASTICSEARCH_HOSTS=http://elasticsearch:9200
+    ports:
+      - "5596:5601"
+    depends_on:
+      - elasticsearch
+    networks:
+      - dev-network
+
+  # 3. PostgreSQL
+  postgres:
+    image: postgres:16
+    container_name: postgres
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=admin
+      - POSTGRES_DB=libreria
+    ports:
+      - "5002:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - dev-network
+
+  # 4. Apache Kafka (in modalità KRaft, senza Zookeeper)
+  kafka:
+    image: apache/kafka:latest
+    container_name: kafka
+    environment:
+      - KAFKA_NODE_ID=1
+      - KAFKA_PROCESS_ROLES=broker,controller
+      - KAFKA_LISTENERS=PLAINTEXT://:9092,CONTROLLER://:9093
+      - KAFKA_ADVERTISED_LISTENERS=PLAINTEXT://localhost:9092
+      - KAFKA_CONTROLLER_LISTENER_NAMES=CONTROLLER
+      - KAFKA_LISTENER_SECURITY_PROTOCOL_MAP=CONTROLLER:PLAINTEXT,PLAINTEXT:PLAINTEXT
+      - KAFKA_CONTROLLER_QUORUM_VOTERS=1@localhost:9093
+      - KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR=1
+      - KAFKA_TRANSACTION_STATE_LOG_REPLICATION_FACTOR=1
+      - KAFKA_TRANSACTION_STATE_LOG_MIN_ISR=1
+    ports:
+      - "9092:9092"
+    volumes:
+      - kafka_data:/tmp/kraft-combined-logs
+    networks:
+      - dev-network
+
+# Definisco la rete virtuale condivisa
+networks:
+  dev-network:
+    driver: bridge
+
+# Definisco i volumi "fisici" alla fine del file
+volumes:
+  elastic_data:
+  postgres_data:
+  kafka_data:

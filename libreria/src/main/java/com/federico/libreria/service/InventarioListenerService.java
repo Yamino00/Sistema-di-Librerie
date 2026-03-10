@@ -13,7 +13,6 @@ import jakarta.validation.ConstraintViolation;
 import jakarta.validation.Validator;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.nio.charset.StandardCharsets;
 import java.util.Set;
@@ -37,7 +36,6 @@ public class InventarioListenerService {
     }
 
     @KafkaListener(topics = "censimento")
-    @Transactional
     public void gestisciNuovoArrivo(byte[] payloadGrezzo) {
         System.out.println("Ricevuto messaggio grezzo: " + payloadGrezzo.length);
 
