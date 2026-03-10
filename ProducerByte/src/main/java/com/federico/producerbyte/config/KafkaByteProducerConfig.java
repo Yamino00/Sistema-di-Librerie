@@ -13,7 +13,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 @Configuration
-public class KafkaXmlProducerConfig {
+public class KafkaByteProducerConfig {
 
     @Bean
     public ProducerFactory<String, byte[]> producerFactory() {
