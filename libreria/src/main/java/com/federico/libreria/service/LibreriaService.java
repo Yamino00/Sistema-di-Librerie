@@ -23,7 +23,7 @@ public class LibreriaService {
     public List<LibreriaDTO> findAllLibreria() {
         return libreriaRepository.findAll().stream()
                 .map(libreriaMapper::toDto)
-                .collect(Collectors.toList());
+                .toList();
     }
 
     public Optional<LibreriaDTO> findLibreriaById(Long id) {

@@ -3,7 +3,6 @@ package com.federico.libreria.service;
 import com.federico.libreria.dto.UtenteDTO;
 import com.federico.libreria.entity.Utente;
 import com.federico.libreria.mapper.UtenteMapper;
-import com.federico.libreria.repository.PrestitoRepository;
 import com.federico.libreria.repository.UtenteRepository;
 import org.springframework.stereotype.Service;
 
@@ -14,19 +13,17 @@ import java.util.stream.Collectors;
 @Service
 public class UtenteService {
     private final UtenteRepository utenteRepository;
-    private final PrestitoRepository prestitoRepository;
     private final UtenteMapper utenteMapper;
 
-    public UtenteService(UtenteRepository utenteRepository, PrestitoRepository prestitoRepository, UtenteMapper utenteMapper) {
+    public UtenteService(UtenteRepository utenteRepository, UtenteMapper utenteMapper) {
         this.utenteRepository = utenteRepository;
-        this.prestitoRepository = prestitoRepository;
         this.utenteMapper = utenteMapper;
     }
 
     public List<UtenteDTO> findAllUtente() {
         return utenteRepository.findAll().stream()
                 .map(utenteMapper::toDto)
-                .collect(Collectors.toList());
+                .toList();
     }
 
     public Optional<UtenteDTO> findUtenteById(Long id) {

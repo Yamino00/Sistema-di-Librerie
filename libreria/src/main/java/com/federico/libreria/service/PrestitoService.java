@@ -34,7 +34,7 @@ public class PrestitoService {
     public List<PrestitoDTO> findAllPrestito() {
         return prestitoRepository.findAll().stream()
                 .map(prestitoMapper::toDto)
-                .collect(Collectors.toList());
+                .toList();
     }
 
     public Optional<PrestitoDTO> findPrestitoById(Long id) {

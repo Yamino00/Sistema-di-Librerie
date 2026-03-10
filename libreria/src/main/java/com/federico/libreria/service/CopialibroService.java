@@ -12,7 +12,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Service
 public class CopialibroService {
@@ -34,7 +33,7 @@ public class CopialibroService {
     public List<CopialibroDTO> findAllCopialibro() {
         return copialibroRepository.findAll().stream()
                 .map(copialibroMapper::toDto)
-                .collect(Collectors.toList());
+                .toList();
     }
 
     public Optional<CopialibroDTO> findCopialibroById(Long id) {

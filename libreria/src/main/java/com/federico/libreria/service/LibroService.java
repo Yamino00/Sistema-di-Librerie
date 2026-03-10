@@ -23,7 +23,7 @@ public class LibroService {
     public List<LibroDTO> findAllLibro() {
         return libroRepository.findAll().stream()
                 .map(libroMapper::toDto)
-                .collect(Collectors.toList());
+                .toList();
     }
 
     public Optional<LibroDTO> findLibroById(Long id) {
