@@ -23,10 +23,7 @@ public class XmlProducerController {
     @PostMapping("/invia")
     public String inviaMessaggioXml(@RequestBody CopialibroDTO messaggio) {
         try {
-            // 1. Convertiamo l'oggetto DTO in una Stringa formattata come XML
             String payloadXml = xmlMapper.writeValueAsString(messaggio);
-
-            // 2. Inviamo la stringa grezza al topic "nuovi-arrivi"
             kafkaTemplate.send("censimento", payloadXml);
 
             return "Messaggio inviato con successo a Kafka in formato XML:\n" + payloadXml;
