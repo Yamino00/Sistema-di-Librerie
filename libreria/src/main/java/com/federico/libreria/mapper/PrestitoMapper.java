@@ -1,56 +1,20 @@
 package com.federico.libreria.mapper;
 
 import com.federico.libreria.dto.PrestitoDTO;
-import com.federico.libreria.entity.Copialibro;
 import com.federico.libreria.entity.Prestito;
-import com.federico.libreria.entity.Utente;
-import org.springframework.stereotype.Component;
+import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
 
-@Component
-public class PrestitoMapper {
+@Mapper(componentModel = "spring")
+public interface PrestitoMapper {
 
-    public PrestitoDTO toDto(Prestito entity) {
-        if (entity == null) return null;
+    @Mapping(source = "copialibro.id", target = "copialibroId")
+    @Mapping(source = "copialibro.libro.nomeLibro", target = "nomeLibro")
+    @Mapping(source = "utente.id", target = "utenteId")
+    @Mapping(target = "nomeUtente", expression = "java(entity.getUtente() != null ? entity.getUtente().getNome() + \" \" + entity.getUtente().getCognome() : null)")
+    PrestitoDTO toDto(Prestito entity);
 
-        PrestitoDTO dto = new PrestitoDTO();
-        dto.setId(entity.getId());
-        dto.setDataPrestito(entity.getDataPrestito());
-        dto.setDataRestituzione(entity.getDataRestituzione());
-
-        if (entity.getCopialibro() != null) {
-            dto.setCopialibroId(entity.getCopialibro().getId());
-            if (entity.getCopialibro().getLibro() != null) {
-                dto.setNomeLibro(entity.getCopialibro().getLibro().getNomeLibro());
-            }
-        }
-
-        if (entity.getUtente() != null) {
-            dto.setUtenteId(entity.getUtente().getId());
-            dto.setNomeUtente(entity.getUtente().getNome() + " " + entity.getUtente().getCognome());
-        }
-
-        return dto;
-    }
-
-    public Prestito toEntity(PrestitoDTO dto) {
-        if (dto == null) return null;
-
-        Prestito entity = new Prestito();
-        entity.setDataPrestito(dto.getDataPrestito());
-        entity.setDataRestituzione(dto.getDataRestituzione());
-
-        if (dto.getCopialibroId() != null) {
-            Copialibro copialibroStub = new Copialibro();
-            copialibroStub.setId(dto.getCopialibroId());
-            entity.setCopialibro(copialibroStub);
-        }
-
-        if (dto.getUtenteId() != null) {
-            Utente utenteStub = new Utente();
-            utenteStub.setId(dto.getUtenteId());
-            entity.setUtente(utenteStub);
-        }
-
-        return entity;
-    }
+    @Mapping(source = "copialibroId", target = "copialibro.id")
+    @Mapping(source = "utenteId", target = "utente.id")
+    Prestito toEntity(PrestitoDTO dto);
 }
