@@ -1,4 +1,4 @@
-package com.federico.libreria.Configuration;
+package com.federico.libreria.configuration;
 
 import org.apache.kafka.clients.consumer.ConsumerConfig;
 import org.apache.kafka.common.serialization.ByteArrayDeserializer;
