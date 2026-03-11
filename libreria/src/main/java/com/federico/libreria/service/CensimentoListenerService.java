@@ -18,7 +18,7 @@ import java.nio.charset.StandardCharsets;
 import java.util.Set;
 
 @Service
-public class InventarioListenerService {
+public class CensimentoListenerService {
 
     private final ObjectMapper jsonMapper = new ObjectMapper();
     private final XmlMapper xmlMapper = new XmlMapper();
@@ -28,7 +28,7 @@ public class InventarioListenerService {
     private final LibroRepository libroRepository;
     private final LibreriaRepository libreriaRepository;
 
-    public InventarioListenerService(Validator validator, CopialibroRepository copialibroRepository, LibroRepository libroRepository, LibreriaRepository libreriaRepository) {
+    public CensimentoListenerService(Validator validator, CopialibroRepository copialibroRepository, LibroRepository libroRepository, LibreriaRepository libreriaRepository) {
         this.validator = validator;
         this.copialibroRepository = copialibroRepository;
         this.libroRepository = libroRepository;
