@@ -7,20 +7,17 @@ import lombok.Setter;
 
 @NoArgsConstructor
 @AllArgsConstructor
-@Getter
-@Setter
-public class CopialibroDTO {
+@Getter @Setter
+public class LibroDTO {
     private Long id;
-
-    private String scaffale;
-
-    private String ripiano;
-
-    private Long libroId;
-
-    private Long libreriaId;
 
     private String nomeLibro;
 
-    private String nomeLibreria;
+    private String trama;
+
+    private Integer anno;
+
+    private String genere;
+
+    private String autore;
 }

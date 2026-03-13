@@ -26,6 +26,13 @@ public class CopialibroController implements CopialibroApiDoc {
     }
 
     @Override
+    @GetMapping("/copiedisponibili")
+    public ResponseEntity<List<CopialibroDTO>> getTuttiCopiadisponibile() {
+        List<CopialibroDTO> copialibro = copialibroService.findCopiadisponiblie();
+        return ResponseEntity.ok(copialibro);
+    }
+
+    @Override
     @GetMapping("/{id}")
     public ResponseEntity<CopialibroDTO> getCopialibroPerId(@PathVariable Long id) {
         return copialibroService.findCopialibroById(id)

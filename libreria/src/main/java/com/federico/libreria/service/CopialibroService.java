@@ -41,6 +41,13 @@ public class CopialibroService {
                 .map(copialibroMapper::toDto);
     }
 
+    public List<CopialibroDTO> findCopiadisponiblie() {
+        return copialibroRepository.findTutteCopieDisponibili().stream()
+                .map(copialibroMapper::toDto)
+                .toList();
+
+    }
+
     public CopialibroDTO save(CopialibroDTO nuovoCopialibroDTO) {
         Copialibro nuovoCopialibro = new Copialibro();
         nuovoCopialibro.setScaffale(nuovoCopialibroDTO.getScaffale());

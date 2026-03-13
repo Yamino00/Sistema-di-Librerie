@@ -55,6 +55,12 @@ public interface CopialibroApiDoc {
     @GetMapping("/copialibro")
     ResponseEntity<List<CopialibroDTO>> getTuttiCopialibro();
 
+    @Operation(summary = "Recupera tutte le copie libro disponibili")
+    @ApiResponse(responseCode = "200", description = "Copie libro disponibili recuperate con successo")
+    @ApiResponse(responseCode = "404", description = "Copie libro disponibili non trovate")
+    @GetMapping("/copiedisponibili")
+    ResponseEntity<List<CopialibroDTO>> getTuttiCopiadisponibile();
+
     @Operation(summary = "Recupera una copia libro per ID")
     @ApiResponse(responseCode = "200", description = "Copia libro trovata")
     @ApiResponse(responseCode = "404", description = "Copia libro non trovata")
