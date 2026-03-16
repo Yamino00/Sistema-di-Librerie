@@ -11,13 +11,13 @@ import java.util.List;
 public interface CopialibroRepository extends JpaRepository<Copialibro, Long> {
     // Trova tutte le copie fisiche disponibili (non in prestito)
     @Query(value = """
-             SELECT c\s
-             FROM Copialibro c\s
-             WHERE c.id NOT IN (
-                 SELECT p.copialibro.id\s
-                 FROM Prestito p\s
-                 WHERE p.dataRestituzione IS NULL
+            SELECT c.*
+            FROM Copialibro c
+            WHERE c.id NOT IN (
+                SELECT p.id_copialibro
+                FROM Prestito p
+                WHERE p.data_restituzione IS NULL
              )
-            \s""")
+            """, nativeQuery = true)
     List<Copialibro> findTutteCopieDisponibili();
 }
