@@ -58,6 +58,44 @@ public interface UtenteApiDoc {
     @GetMapping("/utente")
     ResponseEntity<List<UtenteDTO>> getTuttiUtente();
 
+    @Operation(summary = "Recupera tutti gli ID utente")
+    @ApiResponse(
+            responseCode = "200",
+            description = "Utenti ID trovati",
+            content = @Content(mediaType = "application/json",
+                    examples = @ExampleObject(
+                            value = """
+                                    [
+                                        1,
+                                        2,
+                                        3,
+                                        4,
+                                        5,
+                                        6,
+                                        7,
+                                        8,
+                                        9,
+                                        10,
+                                        11,
+                                        12,
+                                        13
+                                    ]
+                                    """
+                    )
+            )
+    )
+    @ApiResponse(responseCode = "404", description = "Utente ID non trovati",
+            content = @Content(mediaType = "application/json",
+                    examples = @ExampleObject(
+                            value = """
+                                    []
+                                    """
+                    )
+            )
+    )
+    @GetMapping("/tuttiidUtente")
+    ResponseEntity<List<Long>> getIdUtenti();
+
     @Operation(summary = "Recupera un utente per ID")
     @ApiResponse(responseCode = "200", description = "Utente trovato")
     @ApiResponse(responseCode = "404", description = "Utente non trovato")
