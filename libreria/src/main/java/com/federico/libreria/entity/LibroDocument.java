@@ -1,4 +1,4 @@
-package com.federico.libreria.document;
+package com.federico.libreria.entity;
 
 import lombok.Getter;
 import lombok.Setter;
