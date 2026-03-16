@@ -26,6 +26,12 @@ public class UtenteController implements UtenteApiDoc {
         return ResponseEntity.ok(utente);
     }
 
+    @GetMapping("/tuttiidUtente")
+    public ResponseEntity<List<Long>> getIdUtenti() {
+        List<Long> idUtente = utenteService.findAllUtenteId();
+        return ResponseEntity.ok(idUtente);
+    }
+
     @Override
     @GetMapping("/{id}")
     public ResponseEntity<UtenteDTO> getUtentePerId(@PathVariable Long id) {

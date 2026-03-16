@@ -1,7 +1,7 @@
 package com.federico.libreria.service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.federico.libreria.dto.CopialibroDTO;
+import com.federico.libreria.dto.PrestitoEventoDTO;
 import com.federico.libreria.entity.Copialibro;
 import com.federico.libreria.entity.Prestito;
 import com.federico.libreria.entity.Utente;
@@ -14,7 +14,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.Timestamp;
-import java.util.concurrent.ThreadLocalRandom;
 
 @Slf4j
 @Service
@@ -32,22 +31,21 @@ public class PrestitoConsumerService {
         this.objectMapper = new ObjectMapper();
     }
 
-    @KafkaListener(topics = "Sync-Libro")
     @Transactional
+    @KafkaListener(topics = "Sync-Libro")
     public void elaboraPrestito(String payload) {
         try {
-            CopialibroDTO dto = objectMapper.readValue(payload, CopialibroDTO.class);
+            PrestitoEventoDTO dto = objectMapper.readValue(payload, PrestitoEventoDTO.class);
 
-            Copialibro copia = copialibroRepository.findById(dto.getId()).orElse(null);
-            if (copia == null) {
-                log.error("La copia con ID {} non esiste.", dto.getId());
+            Utente utente = utenteRepository.findById(dto.getIdUtente()).orElse(null);
+            if (utente == null) {
+                log.error("L'Utente con ID {} non esiste.", dto.getIdUtente());
                 return;
             }
 
-            long idUtenteRandom = ThreadLocalRandom.current().nextLong(2, 14);
-
-            Utente utente = utenteRepository.findById(idUtenteRandom).orElse(null);
-            if (utente == null) {
+            Copialibro copia = copialibroRepository.findById(dto.getCopia().getId()).orElse(null);
+            if (copia == null) {
+                log.error("La copia con ID {} non esiste.", dto.getCopia().getId());
                 return;
             }
 

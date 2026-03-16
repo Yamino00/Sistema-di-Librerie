@@ -25,6 +25,10 @@ public class UtenteService {
                 .toList();
     }
 
+    public List<Long> findAllUtenteId() {
+        return utenteRepository.findAllId();
+    }
+
     public Optional<UtenteDTO> findUtenteById(Long id) {
         return utenteRepository.findById(id)
                 .map(utenteMapper::toDto);
