@@ -13,7 +13,7 @@ import org.springframework.data.elasticsearch.annotations.FieldType;
 public class LibroDocument {
 
     @Id
-    private Integer id;
+    private Long id;
 
     @Field(type = FieldType.Text)
     private String nomeLibro;

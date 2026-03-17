@@ -18,7 +18,7 @@ public class CopialibroDocument {
     private Long idLibro;
 
     @Field(type = FieldType.Long)
-    private Long idlibreria;
+    private Long idLibreria;
 
     @Field(type = FieldType.Text)
     private String scaffale;
