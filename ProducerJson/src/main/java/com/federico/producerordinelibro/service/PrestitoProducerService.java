@@ -3,8 +3,6 @@ package com.federico.producerordinelibro.service;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.federico.producerordinelibro.dto.CopialibroDTO;
 import com.federico.producerordinelibro.dto.PrestitoEventoDTO;
-import com.federico.producerordinelibro.dto.PrestitoEventoDTO;
-import com.federico.producerordinelibro.dto.UtenteDTO;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -29,7 +27,7 @@ public class PrestitoProducerService {
         this.objectMapper = new ObjectMapper();
     }
 
-    @Scheduled(fixedRate = 10000) //millisecondi
+    @Scheduled(fixedRate = 60000) //millisecondi
     @Transactional
     public void InviaCopiaRandom() {
         String libriUrl = "http://localhost:8081/copialibro/copiedisponibili";
