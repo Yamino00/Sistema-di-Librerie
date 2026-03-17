@@ -48,6 +48,10 @@ public class CopialibroService {
 
     }
 
+    public List<Long> findCopiaIddisponiblie() {
+        return copialibroRepository.findTutteCopieIdDisponibili();
+    }
+
     public CopialibroDTO save(CopialibroDTO nuovoCopialibroDTO) {
         Copialibro nuovoCopialibro = new Copialibro();
         nuovoCopialibro.setScaffale(nuovoCopialibroDTO.getScaffale());

@@ -11,6 +11,6 @@ import lombok.Setter;
 @NoArgsConstructor
 public class PrestitoEventoDTO {
     private Long idUtente;
-    private CopialibroDTO copia;
+    private Long idCopia;
 
 }

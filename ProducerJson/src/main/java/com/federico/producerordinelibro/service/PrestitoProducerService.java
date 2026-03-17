@@ -1,7 +1,7 @@
 package com.federico.producerordinelibro.service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.federico.producerordinelibro.dto.CopialibroDTO;
+import java.lang.Long;
 import com.federico.producerordinelibro.dto.PrestitoEventoDTO;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.kafka.core.KafkaTemplate;
@@ -30,34 +30,34 @@ public class PrestitoProducerService {
     @Scheduled(fixedRate = 60000) //millisecondi
     @Transactional
     public void InviaCopiaRandom() {
-        String libriUrl = "http://localhost:8081/copialibro/copiedisponibili";
-        String utentiUrl = "http://localhost:8081/utente/tuttiidUtente";
+        String libriUrl = "http://localhost:8081/copialibro/disponibili/id";
+        String utentiUrl = "http://localhost:8081/utente/tutti/id";
 
         try {
-            CopialibroDTO[] copie = restTemplate.getForObject(libriUrl, CopialibroDTO[].class);
+            Long[] idCopie = restTemplate.getForObject(libriUrl, Long[].class);
             Long[] idUtenti = restTemplate.getForObject(utentiUrl, Long[].class);
 
-            if (idUtenti == null || idUtenti.length == 0) {
+            if (idUtenti == null) {
                 log.error("Nessun utente disponibile per il prestito");
                 return;
             }
 
-            if (copie == null || copie.length == 0) {
+            if (idCopie == null) {
                 log.error("Nessuna copia disponibile per il prestito");
                 return;
             }
 
-            CopialibroDTO copiaScelta = copie[random.nextInt(copie.length)];
+            Long idCopiaScelta = idCopie[random.nextInt(idCopie.length)];
             Long idUtenteScelto = idUtenti[random.nextInt(idUtenti.length)];
 
             PrestitoEventoDTO evento = new PrestitoEventoDTO();
-            evento.setCopia(copiaScelta);
+            evento.setIdCopia(idCopiaScelta);
             evento.setIdUtente(idUtenteScelto);
 
             String payload = objectMapper.writeValueAsString(evento);
 
             kafkaTemplate.send("Sync-Libro", payload).get();
-            log.info("Richiesta inviata: Copia ID {} assegnata all'utente ID {}", copiaScelta.getId(), idUtenteScelto);
+            log.info("Richiesta inviata: Copia ID {} assegnata all'utente ID {}", idCopiaScelta, idUtenteScelto);
 
         } catch (Exception e) {
             log.error("Errore durante l'invio: {}", e.getMessage());

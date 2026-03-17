@@ -43,9 +43,9 @@ public class PrestitoConsumerService {
                 return;
             }
 
-            Copialibro copia = copialibroRepository.findById(dto.getCopia().getId()).orElse(null);
+            Copialibro copia = copialibroRepository.findById(dto.getIdCopia()).orElse(null);
             if (copia == null) {
-                log.error("La copia con ID {} non esiste.", dto.getCopia().getId());
+                log.error("La copia con ID {} non esiste.", dto.getIdCopia());
                 return;
             }
 

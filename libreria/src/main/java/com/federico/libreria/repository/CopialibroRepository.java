@@ -20,4 +20,14 @@ public interface CopialibroRepository extends JpaRepository<Copialibro, Long> {
              )
             """, nativeQuery = true)
     List<Copialibro> findTutteCopieDisponibili();
+
+    @Query(value = """
+            SELECT id FROM Copialibro c
+                        WHERE c.id NOT IN (
+                            SELECT p.id_copialibro
+                            FROM Prestito p
+                            WHERE p.data_restituzione IS NULL
+                         )
+            """, nativeQuery = true)
+    List<Long> findTutteCopieIdDisponibili();
 }

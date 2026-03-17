@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+//Non fare gli indirizzi troppo simili fra di loro e usa più " / "
 @RestController
 @RequestMapping("/copialibro")
 public class CopialibroController implements CopialibroApiDoc {
@@ -26,9 +27,15 @@ public class CopialibroController implements CopialibroApiDoc {
     }
 
     @Override
-    @GetMapping("/copiedisponibili")
+    @GetMapping("/disponibili")
     public ResponseEntity<List<CopialibroDTO>> getTuttiCopiadisponibile() {
         List<CopialibroDTO> copialibro = copialibroService.findCopiadisponiblie();
+        return ResponseEntity.ok(copialibro);
+    }
+
+    @GetMapping("/disponibili/id")
+    public ResponseEntity<List<Long>> getTuttiCopiaIddisponibile() {
+        List<Long> copialibro = copialibroService.findCopiaIddisponiblie();
         return ResponseEntity.ok(copialibro);
     }
 
