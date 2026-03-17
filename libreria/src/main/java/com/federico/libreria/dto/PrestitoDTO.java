@@ -5,7 +5,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.util.Date;
+import java.sql.Timestamp;
 
 @NoArgsConstructor
 @AllArgsConstructor
@@ -16,6 +16,6 @@ public class PrestitoDTO {
     private String nomeLibro;
     private Long utenteId;
     private String nomeUtente;
-    private Date dataPrestito;
-    private Date dataRestituzione;
+    private Timestamp dataPrestito;
+    private Timestamp dataRestituzione;
 }

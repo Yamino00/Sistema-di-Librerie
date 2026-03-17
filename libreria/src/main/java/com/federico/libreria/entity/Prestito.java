@@ -4,7 +4,7 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.util.Date;
+import java.sql.Timestamp;
 
 @Entity
 @Table(name = "prestito")
@@ -24,9 +24,9 @@ public class Prestito {
     private Utente utente;
 
     @Column(name = "data_prestito", nullable = false)
-    private Date dataPrestito;
+    private Timestamp dataPrestito;
 
     @Column(name = "data_restituzione")
-    private Date dataRestituzione;
+    private Timestamp dataRestituzione;
 }
 
