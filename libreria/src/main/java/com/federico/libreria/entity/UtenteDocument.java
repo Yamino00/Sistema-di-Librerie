@@ -2,32 +2,29 @@ package com.federico.libreria.entity;
 
 import lombok.Getter;
 import lombok.Setter;
-import org.springframework.data.annotation.Id;
 import org.springframework.data.elasticsearch.annotations.Document;
 import org.springframework.data.elasticsearch.annotations.Field;
 import org.springframework.data.elasticsearch.annotations.FieldType;
 
-@Document(indexName = "libro")
+@Document(indexName = "utente")
 @Getter
 @Setter
-public class LibroDocument {
+public class UtenteDocument {
 
-    @Id
-    private Integer id;
-
-    @Field(type = FieldType.Text)
-    private String nomeLibro;
+    private Long id;
 
     @Field(type = FieldType.Text)
-    private String autore;
+    private String nome;
 
     @Field(type = FieldType.Text)
-    private String genere;
+    private String cognome;
+
+    @Field(type = FieldType.Text)
+    private String email;
 
     @Field(type = FieldType.Integer)
-    private Integer anno;
+    private Integer eta;
 
-    @Field(type = FieldType.Text)
-    private String trama;
-
+    @Field(type = FieldType.Keyword)
+    private String genere;
 }

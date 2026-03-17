@@ -7,27 +7,20 @@ import org.springframework.data.elasticsearch.annotations.Document;
 import org.springframework.data.elasticsearch.annotations.Field;
 import org.springframework.data.elasticsearch.annotations.FieldType;
 
-@Document(indexName = "libro")
+@Document(indexName = "libreria")
 @Getter
 @Setter
-public class LibroDocument {
-
+public class LibreriaDocument {
     @Id
     private Integer id;
 
     @Field(type = FieldType.Text)
-    private String nomeLibro;
+    private String nome;
 
     @Field(type = FieldType.Text)
-    private String autore;
+    private String indirizzo;
 
     @Field(type = FieldType.Text)
-    private String genere;
-
-    @Field(type = FieldType.Integer)
-    private Integer anno;
-
-    @Field(type = FieldType.Text)
-    private String trama;
+    private String citta;
 
 }
