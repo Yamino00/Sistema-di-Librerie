@@ -32,7 +32,7 @@ public class PrestitoConsumerService {
     }
 
     @Transactional
-    @KafkaListener(topics = "Sync-Libro")
+    @KafkaListener(topics = "Prestito")
     public void elaboraPrestito(String payload) {
         try {
             PrestitoEventoDTO dto = objectMapper.readValue(payload, PrestitoEventoDTO.class);

@@ -56,7 +56,7 @@ public class PrestitoProducerService {
 
             String payload = objectMapper.writeValueAsString(evento);
 
-            kafkaTemplate.send("Sync-Libro", payload).get();
+            kafkaTemplate.send("Prestito", payload).get();
             log.info("Richiesta inviata: Copia ID {} assegnata all'utente ID {}", idCopiaScelta, idUtenteScelto);
 
         } catch (Exception e) {
