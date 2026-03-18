@@ -44,8 +44,8 @@ public class LibreriaService {
             Libreria nuovaLibreria = libreriaMapper.toEntity(nuovaLibreriaDTO);
             Libreria libreriaSalvata = libreriaRepository.save(nuovaLibreria);
             LibreriaDTO dtoSalvato = libreriaMapper.toDto(libreriaSalvata);
-            String payload = objectMapper.writeValueAsString(dtoSalvato);
-            kafkaTemplate.send("SyncElastic", payload);
+            String savelibreria = objectMapper.writeValueAsString(dtoSalvato);
+            kafkaTemplate.send("SyncElastic", savelibreria);
             return dtoSalvato;
         } catch (Exception e) {
             log.error("Errore durante la creazione della libreria: {}", e.getMessage());
