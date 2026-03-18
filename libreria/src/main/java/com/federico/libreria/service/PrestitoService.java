@@ -15,17 +15,15 @@ import java.util.Optional;
 
 @Service
 public class PrestitoService {
+
     private final PrestitoRepository prestitoRepository;
     private final CopialibroRepository copialibroRepository;
     private final UtenteRepository utenteRepository;
     private final PrestitoMapper prestitoMapper;
 
-    public PrestitoService(PrestitoRepository prestitoRepository,
-                           CopialibroRepository copialibroRepository,
-                           UtenteRepository utenteRepository,
-                           PrestitoMapper prestitoMapper) {
-        this.prestitoRepository = prestitoRepository;
+    public PrestitoService(CopialibroRepository copialibroRepository, PrestitoRepository prestitoRepository, UtenteRepository utenteRepository, PrestitoMapper prestitoMapper) {
         this.copialibroRepository = copialibroRepository;
+        this.prestitoRepository = prestitoRepository;
         this.utenteRepository = utenteRepository;
         this.prestitoMapper = prestitoMapper;
     }

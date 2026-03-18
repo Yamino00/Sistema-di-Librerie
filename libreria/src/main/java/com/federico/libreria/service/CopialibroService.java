@@ -20,14 +20,11 @@ public class CopialibroService {
     private final LibreriaRepository libreriaRepository;
     private final CopialibroMapper copialibroMapper;
 
-    public CopialibroService(CopialibroRepository copialibroRepository,
-                             LibroRepository libroRepository,
-                             LibreriaRepository libreriaRepository,
-                             CopialibroMapper copialibroMapper) {
+    public CopialibroService(CopialibroMapper copialibroMapper, CopialibroRepository copialibroRepository, LibroRepository libroRepository, LibreriaRepository libreriaRepository) {
+        this.copialibroMapper = copialibroMapper;
         this.copialibroRepository = copialibroRepository;
         this.libroRepository = libroRepository;
         this.libreriaRepository = libreriaRepository;
-        this.copialibroMapper = copialibroMapper;
     }
 
     public List<CopialibroDTO> findAllCopialibro() {
