@@ -10,8 +10,6 @@ import com.federico.libreria.repository.PrestitoRepository;
 import com.federico.libreria.repository.UtenteRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.kafka.annotation.KafkaListener;
-import org.springframework.messaging.handler.annotation.Header;
-import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -35,20 +33,6 @@ public class PrestitoConsumerService {
 
     @Transactional
     @KafkaListener(topics = "Prestito")
-    public void gestisciMessaggiKafka(
-            @Payload String payload,
-            @Header(value = "TIPO_OPERAZIONE", required = false) String tipoOperazione) {
-
-        if ("RESTITUZIONE".equals(tipoOperazione)) {
-            log.info("Ricevuto messaggio di RESTITUZIONE");
-            elaboraRestituzione(payload);
-        } else {
-            log.info("Ricevuto messaggio di PRESTITO");
-            elaboraPrestito(payload);
-        }
-    }
-
-    // CREAZIONE DI UN NUOVO PRESTITO
     public void elaboraPrestito(String payload) {
         try {
             PrestitoEventoDTO dto = objectMapper.readValue(payload, PrestitoEventoDTO.class);
@@ -76,29 +60,6 @@ public class PrestitoConsumerService {
 
         } catch (Exception e) {
             log.error("Errore durante l'elaborazione del prestito: {}", e.getMessage());
-        }
-    }
-
-    // RESTITUZIONE COPIA DEL LIBRO
-    private void elaboraRestituzione(String payload) {
-        try {
-            Long idPrestito = Long.valueOf(payload.trim());
-
-            Prestito prestito = prestitoRepository.findById(idPrestito).orElse(null);
-            if (prestito == null) {
-                log.error("Il prestito con ID {} non esiste nel DB.", idPrestito);
-                return;
-            }
-
-            prestito.setDataRestituzione(new Timestamp(System.currentTimeMillis()));
-
-            prestitoRepository.save(prestito);
-
-            log.info("Restituzione completata: Copia con ID {}  tornata in libreria. Prestito con ID {} chiuso",
-                    prestito.getCopialibro().getId(), prestito.getId());
-
-        } catch (Exception e) {
-            log.error("Errore inaspettato durante la restituzione: {}", e.getMessage());
         }
     }
 }

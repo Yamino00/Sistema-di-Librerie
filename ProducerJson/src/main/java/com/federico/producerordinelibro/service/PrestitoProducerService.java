@@ -5,6 +5,9 @@ import java.lang.Long;
 import com.federico.producerordinelibro.dto.PrestitoEventoDTO;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.kafka.core.KafkaTemplate;
+import org.springframework.kafka.support.KafkaHeaders;
+import org.springframework.messaging.Message;
+import org.springframework.messaging.support.MessageBuilder;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -27,7 +30,7 @@ public class PrestitoProducerService {
         this.objectMapper = new ObjectMapper();
     }
 
-    @Scheduled(fixedRate = 60000) //millisecondi
+    @Scheduled(fixedRate = 10000) //millisecondi
     @Transactional
     public void InviaCopiaRandom() {
         String libriUrl = "http://localhost:8081/copialibro/disponibili/id";
@@ -56,7 +59,13 @@ public class PrestitoProducerService {
 
             String payload = objectMapper.writeValueAsString(evento);
 
-            kafkaTemplate.send("Prestito", payload).get();
+            Message<String> messaggio = MessageBuilder
+                    .withPayload(payload)
+                    .setHeader(KafkaHeaders.TOPIC, "Prestito")
+                    .setHeader("TIPO_OPERAZIONE", "PRESTITO")
+                    .build();
+
+            kafkaTemplate.send(messaggio).get();
             log.info("Richiesta inviata: Copia ID {} assegnata all'utente ID {}", idCopiaScelta, idUtenteScelto);
 
         } catch (Exception e) {

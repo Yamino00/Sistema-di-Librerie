@@ -39,6 +39,10 @@ public class PrestitoService {
                 .map(prestitoMapper::toDto);
     }
 
+    public List<Long> findAllPrestitoAttivoId() {
+        return prestitoRepository.findIdPrestitiAttivi();
+    }
+
     public PrestitoDTO save(PrestitoDTO nuovoPrestitoDTO) {
         Prestito nuovoPrestito = new Prestito();
         nuovoPrestito.setDataPrestito(nuovoPrestitoDTO.getDataPrestito());

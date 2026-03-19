@@ -24,6 +24,12 @@ public class PrestitoController implements PrestitoApiDoc {
         return ResponseEntity.ok(prestito);
     }
 
+    @GetMapping("/tutti/id/attivi")
+    public ResponseEntity<List<Long>> getIdUtenti() {
+        List<Long> idPrestitoAtt = prestitoService.findAllPrestitoAttivoId();
+        return ResponseEntity.ok(idPrestitoAtt);
+    }
+
     @Override
     @GetMapping("/{id}")
     public ResponseEntity<PrestitoDTO> getPrestitoPerId(@PathVariable Long id) {
