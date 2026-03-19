@@ -10,7 +10,6 @@ import org.springframework.messaging.Message;
 import org.springframework.messaging.support.MessageBuilder;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.Random;
@@ -30,8 +29,7 @@ public class PrestitoProducerService {
         this.objectMapper = new ObjectMapper();
     }
 
-    @Scheduled(fixedRate = 10000) //millisecondi
-    @Transactional
+    @Scheduled(fixedRate = 120000) //millisecondi
     public void InviaCopiaRandom() {
         String libriUrl = "http://localhost:8081/copialibro/disponibili/id";
         String utentiUrl = "http://localhost:8081/utente/tutti/id";

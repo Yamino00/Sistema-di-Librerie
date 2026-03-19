@@ -24,7 +24,7 @@ public class PrestitoRestituzioneService {
         this.kafkaTemplate = kafkaTemplate;
     }
 
-    @Scheduled(fixedRate = 10000)
+    @Scheduled(fixedRate = 120000)
     public void restituisciLibroRandom() {
 
         String prestitiAttiviUrl = "http://localhost:8081/prestito/tutti/id/attivi";

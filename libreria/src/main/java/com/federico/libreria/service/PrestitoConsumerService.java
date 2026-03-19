@@ -35,20 +35,21 @@ public class PrestitoConsumerService {
 
     @Transactional
     @KafkaListener(topics = "Prestito")
-    public void gestisciMessaggiKafka(
+    public void gestioneMessaggiKafka(
             @Payload String payload,
             @Header(value = "TIPO_OPERAZIONE", required = false) String tipoOperazione) {
 
         if ("RESTITUZIONE".equals(tipoOperazione)) {
             log.info("Ricevuto messaggio di RESTITUZIONE");
             elaboraRestituzione(payload);
-        } else {
+        } else if ("PRESTITO".equals(tipoOperazione)) {
             log.info("Ricevuto messaggio di PRESTITO");
             elaboraPrestito(payload);
+        } else {
+            log.error("Header assente o non valido");
         }
     }
 
-    // CREAZIONE DI UN NUOVO PRESTITO
     public void elaboraPrestito(String payload) {
         try {
             PrestitoEventoDTO dto = objectMapper.readValue(payload, PrestitoEventoDTO.class);
@@ -79,7 +80,6 @@ public class PrestitoConsumerService {
         }
     }
 
-    // RESTITUZIONE COPIA DEL LIBRO
     private void elaboraRestituzione(String payload) {
         try {
             Long idPrestito = Long.valueOf(payload.trim());
@@ -98,7 +98,7 @@ public class PrestitoConsumerService {
                     prestito.getCopialibro().getId(), prestito.getId());
 
         } catch (Exception e) {
-            log.error("Errore inaspettato durante la restituzione: {}", e.getMessage());
+            log.error("Problema inaspettato durante la restituzione: {}", e.getMessage());
         }
     }
 }
