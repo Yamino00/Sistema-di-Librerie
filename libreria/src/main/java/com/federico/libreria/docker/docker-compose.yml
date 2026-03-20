@@ -65,13 +65,32 @@ services:
     networks:
       - dev-network
 
+  # 5. Apache Cassandra
+  cassandra:
+    image: cassandra:latest
+    container_name: cassandra
+    environment:
+      - CASSANDRA_CLUSTER_NAME=LibreriaCluster
+      - CASSANDRA_DC=datacenter1
+      - CASSANDRA_ENDPOINT_SNITCH=GossipingPropertyFileSnitch
+      # Limita l'uso della RAM per lo sviluppo locale
+      - MAX_HEAP_SIZE=1G
+      - HEAP_NEWSIZE=256M
+    ports:
+      - "9042:9042"
+    volumes:
+      - cassandra_data:/var/lib/cassandra
+    networks:
+      - dev-network
+
 # Definisco la rete virtuale condivisa
 networks:
   dev-network:
     driver: bridge
 
-# Definisco i volumi "fisici" alla fine del file
+# Definisco i volumi per la persistenza dei dati
 volumes:
   elastic_data:
   postgres_data:
   kafka_data:
+  cassandra_data:
