@@ -43,7 +43,7 @@ services:
     networks:
       - dev-network
 
-  # 4. Apache Kafka (in modalità KRaft, senza Zookeeper)
+  # 4. Apache Kafka
   kafka:
     image: apache/kafka:latest
     container_name: kafka

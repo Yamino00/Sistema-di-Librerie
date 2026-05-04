@@ -1,5 +1,7 @@
 package com.federico.producerordinelibro.service;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.federico.producerordinelibro.dto.PrestitoDTO;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.kafka.support.KafkaHeaders;
@@ -17,30 +19,32 @@ public class PrestitoRestituzioneService {
 
     private final RestTemplate restTemplate;
     private final KafkaTemplate<String, String> kafkaTemplate;
+    private final ObjectMapper objectMapper;
     private final Random random = new Random();
 
     public PrestitoRestituzioneService(RestTemplate restTemplate, KafkaTemplate<String, String> kafkaTemplate) {
         this.restTemplate = restTemplate;
         this.kafkaTemplate = kafkaTemplate;
+        this.objectMapper = new ObjectMapper();
     }
 
-    @Scheduled(fixedRate = 120000)
+    // TODO aggiungi al posto degli header gli Enum Restituzione o Prestito
+    @Scheduled(fixedRate = 10000)
     public void restituisciLibroRandom() {
 
-        String prestitiAttiviUrl = "http://localhost:8081/prestito/tutti/id/attivi";
+        String prestitiAttiviUrl = "http://localhost:8081/prestito/attivi";
 
         try {
+            PrestitoDTO[] prestiti = restTemplate.getForObject(prestitiAttiviUrl, PrestitoDTO[].class);
 
-            Long[] idPrestiti = restTemplate.getForObject(prestitiAttiviUrl, Long[].class);
-
-            if (idPrestiti == null) {
+            if (prestiti == null || prestiti.length == 0) {
                 log.info("Nessun libro attualmente in prestito");
                 return;
             }
 
-            Long idPrestitodaRestituire = idPrestiti[random.nextInt(idPrestiti.length)];
+            PrestitoDTO prestitoDaRestituire = prestiti[random.nextInt(prestiti.length)];
 
-            String payload = String.valueOf(idPrestitodaRestituire);
+            String payload = objectMapper.writeValueAsString(prestitoDaRestituire);
 
             // Creazione Header
             Message<String> messaggio = MessageBuilder
@@ -51,11 +55,10 @@ public class PrestitoRestituzioneService {
 
             kafkaTemplate.send(messaggio).get();
 
-            log.info("Richiesta di restituzione inviata: ID Prestito: {}", idPrestitodaRestituire);
+            log.info("Richiesta di restituzione inviata con ID Prestito: {}", prestitoDaRestituire.getId());
 
         } catch (Exception e) {
             log.error("Errore durante l'invio della restituzione: {}", e.getMessage());
         }
     }
-
 }

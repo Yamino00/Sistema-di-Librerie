@@ -24,9 +24,9 @@ public class PrestitoController implements PrestitoApiDoc {
         return ResponseEntity.ok(prestito);
     }
 
-    @GetMapping("/tutti/id/attivi")
-    public ResponseEntity<List<Long>> getIdUtenti() {
-        List<Long> idPrestitoAtt = prestitoService.findAllPrestitoAttivoId();
+    @GetMapping("/attivi")
+    public ResponseEntity<List<PrestitoDTO>> getIdUtenti() {
+        List<PrestitoDTO> idPrestitoAtt = prestitoService.findAllPrestitoAttivo();
         return ResponseEntity.ok(idPrestitoAtt);
     }
 
@@ -36,6 +36,12 @@ public class PrestitoController implements PrestitoApiDoc {
         return prestitoService.findPrestitoById(id)
                 .map(ResponseEntity::ok)
                 .orElse(ResponseEntity.notFound().build());
+    }
+
+    @PostMapping("/archivia-storico")
+    public ResponseEntity<List<PrestitoDTO>> archiviaPrestitiTerminati() {
+        List<PrestitoDTO> prestitiArchiviati = prestitoService.saveStorico();
+        return ResponseEntity.ok(prestitiArchiviati);
     }
 
     @Override

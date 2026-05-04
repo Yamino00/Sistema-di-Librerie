@@ -29,7 +29,7 @@ public class PrestitoProducerService {
         this.objectMapper = new ObjectMapper();
     }
 
-    @Scheduled(fixedRate = 120000) //millisecondi
+    @Scheduled(fixedRate = 10000) //millisecondi
     public void InviaCopiaRandom() {
         String libriUrl = "http://localhost:8081/copialibro/disponibili/id";
         String utentiUrl = "http://localhost:8081/utente/tutti/id";

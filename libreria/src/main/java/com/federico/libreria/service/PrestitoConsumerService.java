@@ -1,6 +1,7 @@
 package com.federico.libreria.service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.federico.libreria.dto.PrestitoDTO;
 import com.federico.libreria.dto.PrestitoEventoDTO;
 import com.federico.libreria.entity.Copialibro;
 import com.federico.libreria.entity.Prestito;
@@ -39,12 +40,12 @@ public class PrestitoConsumerService {
             @Payload String payload,
             @Header(value = "TIPO_OPERAZIONE", required = false) String tipoOperazione) {
 
-        if ("RESTITUZIONE".equals(tipoOperazione)) {
-            log.info("Ricevuto messaggio di RESTITUZIONE");
-            elaboraRestituzione(payload);
-        } else if ("PRESTITO".equals(tipoOperazione)) {
+        if ("PRESTITO".equals(tipoOperazione)) {
             log.info("Ricevuto messaggio di PRESTITO");
             elaboraPrestito(payload);
+        } else if ("RESTITUZIONE".equals(tipoOperazione)) {
+            log.info("Ricevuto messaggio di RESTITUZIONE");
+            elaboraRestituzione(payload);
         } else {
             log.error("Header assente o non valido");
         }
@@ -82,7 +83,8 @@ public class PrestitoConsumerService {
 
     private void elaboraRestituzione(String payload) {
         try {
-            Long idPrestito = Long.valueOf(payload.trim());
+            PrestitoDTO dto = objectMapper.readValue(payload, PrestitoDTO.class);
+            Long idPrestito = dto.getId();
 
             Prestito prestito = prestitoRepository.findById(idPrestito).orElse(null);
             if (prestito == null) {

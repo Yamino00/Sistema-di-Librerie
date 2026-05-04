@@ -10,7 +10,12 @@ import java.util.List;
 @Repository
 public interface PrestitoRepository extends JpaRepository<Prestito, Long> {
     @Query(value = """
-            SELECT id FROM prestito WHERE data_restituzione IS NULL
+            SELECT * FROM prestito WHERE data_restituzione IS NULL
             """, nativeQuery = true)
-    List<Long> findIdPrestitiAttivi();
+    List<Prestito> findPrestitiAttivi();
+
+    @Query(value = """
+            SELECT * FROM prestito WHERE data_restituzione IS NOT NULL
+            """, nativeQuery = true)
+    List<Prestito> findPrestitiTerminati();
 }
