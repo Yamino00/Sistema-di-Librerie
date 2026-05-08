@@ -56,6 +56,11 @@ public class UtenteController implements UtenteApiDoc {
         return ResponseEntity.status(HttpStatus.CREATED).body(utenteSalvato);
     }
 
+    @PostMapping("/saveAll")
+    public ResponseEntity<UtenteDTO> saveAll(@RequestBody List<UtenteDTO> utenteDTO) {
+        UtenteDTO utentiSalavti = utenteService.saveAllUtente(utenteDTO).getFirst();
+        return ResponseEntity.status(HttpStatus.CREATED).body(utentiSalavti);
+    }
     @Override
     @PutMapping("/{id}")
     public ResponseEntity<UtenteDTO> putUtente(@PathVariable Long id, @RequestBody UtenteDTO datiAggiornatiDTO) {

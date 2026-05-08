@@ -6,15 +6,16 @@ import com.federico.libreria.entity.Prestito;
 import com.federico.libreria.entity.PrestitoStorico;
 import com.federico.libreria.entity.Utente;
 import com.federico.libreria.mapper.PrestitoMapper;
+import com.federico.libreria.mapper.PrestitoStoricoMapper;
 import com.federico.libreria.repository.CopialibroRepository;
 import com.federico.libreria.repository.PrestitoRepository;
 import com.federico.libreria.repository.PrestitoStoricoRepository;
 import com.federico.libreria.repository.UtenteRepository;
+import jakarta.transaction.Transactional;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
-import java.time.Instant;
 import java.util.List;
 import java.util.Optional;
 
@@ -22,13 +23,15 @@ import java.util.Optional;
 @Service
 public class PrestitoService {
 
+    private final PrestitoStoricoMapper prestitoStoricoMapper;
     private final PrestitoRepository prestitoRepository;
     private final CopialibroRepository copialibroRepository;
     private final UtenteRepository utenteRepository;
     private final PrestitoStoricoRepository prestitoStoricoRepository;
     private final PrestitoMapper prestitoMapper;
 
-    public PrestitoService(CopialibroRepository copialibroRepository, PrestitoRepository prestitoRepository, UtenteRepository utenteRepository, PrestitoStoricoRepository prestitoStoricoRepository, PrestitoMapper prestitoMapper) {
+    public PrestitoService(PrestitoStoricoMapper prestitoStoricoMapper, CopialibroRepository copialibroRepository, PrestitoRepository prestitoRepository, UtenteRepository utenteRepository, PrestitoStoricoRepository prestitoStoricoRepository, PrestitoMapper prestitoMapper) {
+        this.prestitoStoricoMapper = prestitoStoricoMapper;
         this.copialibroRepository = copialibroRepository;
         this.prestitoRepository = prestitoRepository;
         this.utenteRepository = utenteRepository;
@@ -42,34 +45,29 @@ public class PrestitoService {
                 .toList();
     }
 
-    @Scheduled(fixedRate = 10000)
-    public List<PrestitoDTO> saveStorico() {
-        List<Prestito> prestitiTerminati = prestitoRepository.findPrestitiTerminati();
-
-        // Mappatura verso Cassandra
-        List<PrestitoStorico> storicoDaSalvare = prestitiTerminati.stream()
-                .map(prestito -> {
-                    PrestitoStorico storico = new PrestitoStorico();
-                    storico.setIdPrestito(prestito.getId());
-                    storico.setDataEvento(Instant.now());
-                    storico.setTipoEvento("ARCHIVIAZIONE_STORICO");
-                    storico.setIdCopialibro(prestito.getCopialibro().getId());
-                    storico.setIdUtente(prestito.getUtente().getId());
-                    storico.setDataPrestito(prestito.getDataPrestito().toInstant());
-                    storico.setDataRestituzione(prestito.getDataRestituzione().toInstant());
-                    return storico;
-                })
-                .toList();
-        prestitoStoricoRepository.saveAll(storicoDaSalvare);
-        prestitoRepository.deleteAll(prestitiTerminati);
+    @Transactional
+    @Scheduled(fixedRate = 30000)
+    public void saveStorico() {
         try {
-            return prestitiTerminati.stream()
-                    .map(prestitoMapper::toDto)
+            List<Prestito> prestitiTerminati = prestitoRepository.findPrestitiTerminati();
+
+            if (prestitiTerminati.isEmpty()) {
+                return;
+            }
+
+            // Mappatura verso Cassandra con mapstruct
+            List<PrestitoStorico> storicoDaSalvare = prestitiTerminati.stream()
+                    .map(prestitoStoricoMapper::toStorico)
                     .toList();
+
+            prestitoStoricoRepository.saveAll(storicoDaSalvare);
+            prestitoRepository.deleteAll(prestitiTerminati);
+
+            log.info("Archiviazione completata: {} prestiti terminati sono stati spostati nello storico", prestitiTerminati.size());
+
         } catch (Exception e) {
-            log.info("I Presiti terminati non sono stati archiviati correttamente: {}", e.getMessage());
+            log.error("I Prestiti terminati non sono stati archiviati correttamente: {}", e.getMessage(), e);
         }
-        return null;
     }
 
     public Optional<PrestitoDTO> findPrestitoById(Long id) {

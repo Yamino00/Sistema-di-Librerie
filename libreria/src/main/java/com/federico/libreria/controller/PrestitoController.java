@@ -38,12 +38,6 @@ public class PrestitoController implements PrestitoApiDoc {
                 .orElse(ResponseEntity.notFound().build());
     }
 
-    @PostMapping("/archivia-storico")
-    public ResponseEntity<List<PrestitoDTO>> archiviaPrestitiTerminati() {
-        List<PrestitoDTO> prestitiArchiviati = prestitoService.saveStorico();
-        return ResponseEntity.ok(prestitiArchiviati);
-    }
-
     @Override
     @PostMapping
     public ResponseEntity<PrestitoDTO> postPrestito(@RequestBody PrestitoDTO nuovoPrestitoDTO) {

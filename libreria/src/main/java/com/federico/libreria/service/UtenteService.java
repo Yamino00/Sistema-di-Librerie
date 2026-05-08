@@ -25,6 +25,15 @@ public class UtenteService {
                 .toList();
     }
 
+    public List<UtenteDTO> saveAllUtente(List<UtenteDTO> nuovoUtenteDTO) {
+        List<Utente> nuovoUtente = nuovoUtenteDTO.stream()
+                .map(utenteMapper::toEntity)
+                .toList();
+        List<Utente> utenteSalvato = utenteRepository.saveAll(nuovoUtente);
+        return utenteSalvato.stream()
+                .map(utenteMapper::toDto)
+                .toList();
+    }
     public List<Long> findAllUtenteId() {
         return utenteRepository.findAllId();
     }

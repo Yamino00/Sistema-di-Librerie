@@ -22,6 +22,11 @@ import java.sql.Timestamp;
 @Service
 public class PrestitoConsumerService {
 
+    public enum TipoOperazione {
+        PRESTITO,
+        RESTITUZIONE
+    }
+
     private final CopialibroRepository copialibroRepository;
     private final PrestitoRepository prestitoRepository;
     private final UtenteRepository utenteRepository;
@@ -40,10 +45,10 @@ public class PrestitoConsumerService {
             @Payload String payload,
             @Header(value = "TIPO_OPERAZIONE", required = false) String tipoOperazione) {
 
-        if ("PRESTITO".equals(tipoOperazione)) {
+        if (TipoOperazione.PRESTITO.name().equals(tipoOperazione)) {
             log.info("Ricevuto messaggio di PRESTITO");
             elaboraPrestito(payload);
-        } else if ("RESTITUZIONE".equals(tipoOperazione)) {
+        } else if (TipoOperazione.RESTITUZIONE.name().equals(tipoOperazione)) {
             log.info("Ricevuto messaggio di RESTITUZIONE");
             elaboraRestituzione(payload);
         } else {
